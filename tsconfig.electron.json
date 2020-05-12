@@ -4,8 +4,9 @@
     "module": "commonjs",
     "noImplicitAny": true,
     "sourceMap": true,
+    "rootDir": "src/electron",
     "baseUrl": ".",
-    "outDir": "dist",
+    "outDir": "dist/electron",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
@@ -13,6 +14,6 @@
     }
   },
   "include": [
-    "src/**/*"
+    "src/electron/**/*"
   ]
 }

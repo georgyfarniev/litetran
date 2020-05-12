@@ -5,8 +5,8 @@
   "description": "My Electron application description",
   "main": "dist/index.js",
   "scripts": {
-    "start:react": "react-scripts start",
-    "start": "tsc -p tsconfig.electron.json && electron-forge start",
+    "start:react": "cross-env BROWSER=none react-scripts start",
+    "start": "tsc -p tsconfig.electron.json && electron-forge start --app-path dist/electron/index.js",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -85,6 +85,8 @@
   },
   "dependencies": {
     "@types/node": "12.12.38",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
     "electron-squirrel-startup": "^1.0.0"
   }
 }

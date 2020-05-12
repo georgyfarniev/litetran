@@ -4,7 +4,7 @@ import './App.css';
 
 function Header(props: any) {
   return (
-    <p onClick={props.onClicked}>Suppa puppa header! {props.foo}</p>
+    <p onClick={props.onClicked}>Suppa puppa header!222 {props.foo}</p>
   )
 }
 
@@ -19,7 +19,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Edit <code>src/App.tsx</code> and save to reload 222.
         </p>
         <a
           className="App-link"
