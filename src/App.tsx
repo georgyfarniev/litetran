@@ -6,7 +6,7 @@ import { CompoundButton }  from 'office-ui-fabric-react/lib/Button';
 
 function Header(props: any) {
   return (
-    <p onClick={props.onClicked}>Suppa puppa header!222 {props.foo}</p>
+    <p onClick={props.onClicked}>Suppa puppa header!111 {props.foo}</p>
   )
 }
 
@@ -20,7 +20,7 @@ function App() {
       <Header foo="bar" onClicked={f}></Header>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <CompoundButton primary  secondaryText="This is the secondary text.">
+        <CompoundButton primary  secondaryText="2 This is the secondary text 222.">
           Standard
         </CompoundButton>
         <p>

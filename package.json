@@ -5,6 +5,8 @@
   "description": "My Electron application description",
   "main": "dist/index.js",
   "scripts": {
+    "dev": "cross-env NODE_ENV=development npm run dev:start",
+    "dev:start": "concurrently \"npm run start:react\" \"npm run start\"",
     "start:react": "cross-env BROWSER=none react-scripts start",
     "build:react": "react-scripts build",
     "start": "tsc -p tsconfig.electron.json && electron-forge start --app-path dist/electron/index.js",
