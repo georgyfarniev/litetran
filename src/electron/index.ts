@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
@@ -8,6 +8,16 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 const createWindow = () => {
+    protocol.interceptFileProtocol('file', (request, callback) => {
+      const url = request.url.substr(7)    /* all urls start with 'file://' */
+      const p = path.normalize(`${__dirname}/../../build/${url}`)
+      callback(p)
+
+      console.log(p)
+    }, (err) => {
+      if (err) console.error('Failed to register protocol')
+    })
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,
@@ -18,13 +28,17 @@ const createWindow = () => {
   // mainWindow.loadFile(path.join('../public/index.html'));
   mainWindow.removeMenu()
   mainWindow.loadURL(
-    'http://localhost:3000'
-    // process.env.ELECTRON_START_URL ||
-    //   url.format({
-    //     pathname: path.join(__dirname, '/../public/index.html'),
-    //     protocol: 'file:',
-    //     slashes: true
-    //   })
+      // url.format({
+      //   pathname: path.join(__dirname, '/../../build/index.html'),
+      //   protocol: 'file:',
+      //   slashes: true
+      // })
+
+      url.format({
+        pathname: 'index.html',    /* Attention here: origin is path.join(__dirname, 'index.html') */
+        protocol: 'file',
+        slashes: true
+      })
   )
 
   // Open the DevTools.
