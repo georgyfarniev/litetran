@@ -13,21 +13,22 @@ function Header(props: any) {
   )
 }
 
-function f() {
-  alert('clicked!')
-}
-
-function App() {
+function useSelection() {
   const [selected, setSelected] = useState('')
-
-  const [fromLang, setFromLang] = useState('en')
-  const [toLang, setToLang] = useState('ru')
 
   useEffect(() => {
     const f = (_: any, msg: string) => setSelected(msg)
     ipcRenderer.on('selection', f)
     return () => { ipcRenderer.off('selection', f) }
   })
+
+  return selected
+}
+
+function App() {
+  const selected = useSelection()
+  const [fromLang, setFromLang] = useState('en')
+  const [toLang, setToLang] = useState('ru')
 
   const options: any[] = [
     { key: 'en', text: 'English' },
@@ -36,7 +37,7 @@ function App() {
 
   return (
     <div className="lt-app">
-      <TextField multiline />
+      <TextField multiline value={selected}/>
       <div className="lt-toolbar">
         <Dropdown
         className="lt-toolbar-select"
