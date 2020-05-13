@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import { CompoundButton }  from 'office-ui-fabric-react/lib/Button';
+
 function Header(props: any) {
   return (
     <p onClick={props.onClicked}>Suppa puppa header!222 {props.foo}</p>
@@ -18,6 +20,9 @@ function App() {
       <Header foo="bar" onClicked={f}></Header>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <CompoundButton primary  secondaryText="This is the secondary text.">
+          Standard
+        </CompoundButton>
         <p>
           Edit <code>src/App.tsx</code> and save to reload 222.
         </p>

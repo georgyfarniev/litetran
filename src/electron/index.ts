@@ -16,7 +16,7 @@ const createWindow = () => {
 
   // and load the index.html of the app.
   // mainWindow.loadFile(path.join('../public/index.html'));
-
+  mainWindow.removeMenu()
   mainWindow.loadURL(
     'http://localhost:3000'
     // process.env.ELECTRON_START_URL ||
