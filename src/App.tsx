@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { CompoundButton }  from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+
 const { ipcRenderer } = window.require("electron")
 
 function Header(props: any) {
@@ -15,7 +18,10 @@ function f() {
 }
 
 function App() {
-  const [ selected, setSelected ] = useState('')
+  const [selected, setSelected] = useState('')
+
+  const [fromLang, setFromLang] = useState('en')
+  const [toLang, setToLang] = useState('ru')
 
   useEffect(() => {
     const f = (_: any, msg: string) => setSelected(msg)
@@ -23,28 +29,44 @@ function App() {
     return () => { ipcRenderer.off('selection', f) }
   })
 
+  const options: any[] = [
+    { key: 'en', text: 'English' },
+    { key: 'ru', text: 'Russian' },
+  ]
+
   return (
-    <div className="App">
-      <Header foo="bar" onClicked={f}></Header>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <CompoundButton primary  secondaryText="2 This is the secondary text 222.">
-          Standard
-        </CompoundButton>
-        <p>
-          Selected text!!!: {selected}
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="lt-app">
+      <TextField multiline />
+      <div className="lt-toolbar">
+        <Dropdown
+        className="lt-toolbar-select"
+          placeholder="Select an option"
+          options={options}
+          selectedKeys={[ fromLang ]}
+          onChange={(ev: any) => console.dir(ev.target.value)}
+        />
+        <DefaultButton
+          className="lt-toolbar-btn"
+          text="Swap"
+        />
+        <Dropdown
+          className="lt-toolbar-select"
+          placeholder="Select an option"
+          options={options}
+          selectedKeys={[ toLang ]}
+        />
+        <PrimaryButton
+          className="lt-toolbar-btn"
+          text="Translate"
+        />
+       
+      </div>
+        <p>From: {fromLang}</p>
+        <p>to: {toLang}</p>
+        <TextField multiline />
     </div>
-  );
+  )
+
 }
 
 export default App;
