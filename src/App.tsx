@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-
 import { CompoundButton }  from 'office-ui-fabric-react/lib/Button';
+const { ipcRenderer } = window.require("electron")
 
 function Header(props: any) {
   return (
@@ -15,6 +15,14 @@ function f() {
 }
 
 function App() {
+  const [ selected, setSelected ] = useState('')
+
+  useEffect(() => {
+    const f = (_: any, msg: string) => setSelected(msg)
+    ipcRenderer.on('selection', f)
+    return () => { ipcRenderer.off('selection', f) }
+  })
+
   return (
     <div className="App">
       <Header foo="bar" onClicked={f}></Header>
@@ -24,7 +32,7 @@ function App() {
           Standard
         </CompoundButton>
         <p>
-          Edit <code>src/App.tsx</code> and save to reload 222.
+          Selected text!!!: {selected}
         </p>
         <a
           className="App-link"

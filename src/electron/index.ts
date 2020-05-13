@@ -1,4 +1,10 @@
-import { app, protocol, BrowserWindow, Request, globalShortcut } from 'electron'
+import {
+  app,
+  protocol,
+  BrowserWindow,
+  Request,
+  globalShortcut
+} from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import { getSelectedText } from './platform'
@@ -22,7 +28,7 @@ class Application {
   }
 
   private registerShortcuts() {
-     globalShortcut.register(SHORTCUT, this.translate.bind(this))
+    globalShortcut.register(SHORTCUT, this.translate.bind(this))
   }
 
   private async translate() {
@@ -30,7 +36,9 @@ class Application {
 
     this!.window!.setTitle(selected)
     this!.window!.show()
-   }
+
+    this.window?.webContents.send('selection', selected)
+  }
 
   private createWindow() {
     const isDev = process.env.NODE_ENV === 'development'
@@ -38,7 +46,9 @@ class Application {
     this.window = new BrowserWindow({
       height: 600,
       width: 800,
-      // frame: true
+      webPreferences: {
+        nodeIntegration: true
+      }
     })
 
     this.window.removeMenu()
@@ -52,7 +62,7 @@ class Application {
         this.onIntercept.bind(this),
         this.onInterceptError.bind(this)
       )
-  
+
       this.window.loadURL(
         url.format({
           pathname: 'index.html',
@@ -91,7 +101,7 @@ class Application {
     const newPath = path.normalize(`${__dirname}/../../build/${url}`)
     callback(newPath)
   }
-  
+
   private onInterceptError(err: Error) {
     if (err) {
       console.error('Failed to register protocol')
