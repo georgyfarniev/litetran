@@ -4,7 +4,7 @@ import * as url from 'url'
 import { getSelectedText } from './platform'
 
 const DEV_URL = 'http://localhost:3000'
-const SHORTCUT = 'Ctrl+Shift+T'
+const SHORTCUT = 'Ctrl+T'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -30,8 +30,7 @@ class Application {
 
     this!.window!.setTitle(selected)
     this!.window!.show()
-    // console.log('selected text: text')
-  }
+   }
 
   private createWindow() {
     const isDev = process.env.NODE_ENV === 'development'
