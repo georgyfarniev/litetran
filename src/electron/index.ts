@@ -1,8 +1,10 @@
-import { app, protocol, BrowserWindow, Request } from 'electron'
+import { app, protocol, BrowserWindow, Request, globalShortcut } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
+import { getSelectedText } from './platform'
 
 const DEV_URL = 'http://localhost:3000'
+const SHORTCUT = 'Ctrl+Shift+T'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -10,6 +12,8 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 
 class Application {
+  private window?: BrowserWindow
+
   constructor() {
     app.on('ready', this.onReady.bind(this))
     app.on('window-all-closed', this.onAllWindowClosed.bind(this))
@@ -17,20 +21,32 @@ class Application {
     app.on('before-quit', this.onBeforeQuit.bind(this))
   }
 
+  private registerShortcuts() {
+     globalShortcut.register(SHORTCUT, this.translate.bind(this))
+  }
+
+  private async translate() {
+    const selected = getSelectedText()
+
+    this!.window!.setTitle(selected)
+    this!.window!.show()
+    // console.log('selected text: text')
+  }
+
   private createWindow() {
     const isDev = process.env.NODE_ENV === 'development'
 
-    const mainWindow = new BrowserWindow({
+    this.window = new BrowserWindow({
       height: 600,
       width: 800,
-      frame: true
+      // frame: true
     })
 
-    mainWindow.removeMenu()
+    this.window.removeMenu()
 
     if (isDev) {
-      mainWindow.loadURL(DEV_URL)
-      mainWindow.webContents.openDevTools()
+      this.window.loadURL(DEV_URL)
+      this.window.webContents.openDevTools()
     } else {
       protocol.interceptFileProtocol(
         'file',
@@ -38,7 +54,7 @@ class Application {
         this.onInterceptError.bind(this)
       )
   
-      mainWindow.loadURL(
+      this.window.loadURL(
         url.format({
           pathname: 'index.html',
           protocol: 'file',
@@ -64,10 +80,11 @@ class Application {
 
   private onReady() {
     this.createWindow()
+    this.registerShortcuts()
   }
 
   private onBeforeQuit() {
-
+    globalShortcut.unregisterAll()
   }
 
   private onIntercept(request: Request, callback: any) {
@@ -85,7 +102,7 @@ class Application {
 }
 
 function main() {
-  const app = new Application()
+  const litetranApp = new Application()
 }
 
 if (require.main === module) {
