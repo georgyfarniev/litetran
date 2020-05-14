@@ -2,9 +2,12 @@ import {
   app,
   protocol,
   BrowserWindow,
+  Tray,
+  Menu,
   Request,
   globalShortcut,
-  screen
+  screen,
+  Event
 } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
@@ -20,6 +23,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 class Application {
   private window?: BrowserWindow
+  private tray?: Tray
 
   constructor() {
     app.on('ready', this.onReady.bind(this))
@@ -39,9 +43,21 @@ class Application {
     this!.window!.setTitle(selected)
 
     this!.window!.setPosition(pos.x + 16, pos.y + 16)
-    this!.window!.show()
+    this.window?.show()
 
     this.window?.webContents.send('selection', selected)
+  }
+
+  private quit() {
+    app.quit()
+  }
+
+  private activate() {
+    // if (this.window?.isVisible) {
+    //   this.window.hide()
+    // } else {
+      this.window?.show()
+    // }
   }
 
   private createWindow() {
@@ -54,6 +70,8 @@ class Application {
         nodeIntegration: true
       }
     })
+
+    this.window.on('close', this.onWindowClose.bind(this))
 
     this.window.removeMenu()
 
@@ -77,12 +95,36 @@ class Application {
     }
   }
 
+  private createTray() {
+    const icon = path.normalize(`${__dirname}/../../public/logo192.png`)
+    this.tray = new Tray(icon)
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Activate',
+        type: 'normal',
+        click: this.activate.bind(this)
+      },
+      {
+        label: 'Exit',
+        type: 'normal',
+        click: this.quit.bind(this)
+      },
+    ])
+    this.tray.setToolTip('This is my application.')
+    this.tray.setContextMenu(contextMenu)
+  }
+
   /* Event handlers */
 
+  private onWindowClose(event: Event) {
+    event.preventDefault()
+    this.window?.hide()
+  }
+
   private onAllWindowClosed() {
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
+    // if (process.platform !== 'darwin') {
+    //   app.quit()
+    // }
   }
 
   private onActivate() {
@@ -93,6 +135,7 @@ class Application {
 
   private onReady() {
     this.createWindow()
+    this.createTray()
     this.registerShortcuts()
   }
 
