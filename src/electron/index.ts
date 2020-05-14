@@ -3,7 +3,8 @@ import {
   protocol,
   BrowserWindow,
   Request,
-  globalShortcut
+  globalShortcut,
+  screen
 } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
@@ -33,8 +34,11 @@ class Application {
 
   private async translate() {
     const selected = getSelectedText()
+    const pos = screen.getCursorScreenPoint()
 
     this!.window!.setTitle(selected)
+
+    this!.window!.setPosition(pos.x + 16, pos.y + 16)
     this!.window!.show()
 
     this.window?.webContents.send('selection', selected)
