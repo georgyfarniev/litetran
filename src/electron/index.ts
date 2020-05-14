@@ -59,7 +59,7 @@ class Application {
 
     if (isDev) {
       this.window.loadURL(DEV_URL)
-      this.window.webContents.openDevTools()
+      this.window.webContents.openDevTools({ mode: 'bottom' })
     } else {
       protocol.interceptFileProtocol(
         'file',
