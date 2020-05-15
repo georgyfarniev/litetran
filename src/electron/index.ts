@@ -15,6 +15,7 @@ import { getSelectedText } from './platform'
 
 const DEV_URL = 'http://localhost:3000'
 const SHORTCUT = 'Ctrl+T'
+const POPUP_CORNER_PADDING = 32
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -27,7 +28,6 @@ class Application {
 
   constructor() {
     app.on('ready', this.onReady.bind(this))
-    app.on('window-all-closed', this.onAllWindowClosed.bind(this))
     app.on('activate', this.onActivate.bind(this))
     app.on('before-quit', this.onBeforeQuit.bind(this))
   }
@@ -36,15 +36,30 @@ class Application {
     globalShortcut.register(SHORTCUT, this.translate.bind(this))
   }
 
+  private calculateOptimalPopupPosition() {
+    const { bounds } = screen.getPrimaryDisplay()
+    const { width = 0, height = 0 } = this.window!.getBounds()
+    let { x, y } = screen.getCursorScreenPoint()
+
+    x += 16
+    y += 16
+
+    const p = POPUP_CORNER_PADDING
+    const vDiff = (y + height) - (bounds.y + bounds.height) + p
+    const hDiff = (x + width) - (bounds.x + bounds.width) + p
+
+    return {
+      x: hDiff > 0 ? x - hDiff : x,
+      y: vDiff > 0 ? y - vDiff : y
+    }
+  }
+
   private async translate() {
     const selected = getSelectedText()
-    const pos = screen.getCursorScreenPoint()
+    const pos = this.calculateOptimalPopupPosition()
 
-    this!.window!.setTitle(selected)
-
-    this!.window!.setPosition(pos.x + 16, pos.y + 16)
+    this!.window!.setPosition(pos.x , pos.y)
     this.window?.show()
-
     this.window?.webContents.send('selection', selected)
   }
 
@@ -53,11 +68,7 @@ class Application {
   }
 
   private activate() {
-    // if (this.window?.isVisible) {
-    //   this.window.hide()
-    // } else {
-      this.window?.show()
-    // }
+    this.window?.show()
   }
 
   private createWindow() {
@@ -72,7 +83,6 @@ class Application {
     })
 
     this.window.on('close', this.onWindowClose.bind(this))
-
     this.window.removeMenu()
 
     if (isDev) {
@@ -119,12 +129,6 @@ class Application {
   private onWindowClose(event: Event) {
     event.preventDefault()
     this.window?.hide()
-  }
-
-  private onAllWindowClosed() {
-    // if (process.platform !== 'darwin') {
-    //   app.quit()
-    // }
   }
 
   private onActivate() {
