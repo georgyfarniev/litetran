@@ -53,7 +53,7 @@ function App() {
           onChange={(_: any, item: any) => setFromLang(item.key)}
         />
         <DefaultButton
-          className="lt-toolbar-btn"
+          className="lt-swap-btn"
           text="Swap"
           onClick={swap}
         />
