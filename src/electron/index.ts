@@ -122,6 +122,7 @@ class Application {
     ])
     this.tray.setToolTip('This is my application.')
     this.tray.setContextMenu(contextMenu)
+    this.tray.on('click', this.activate.bind(this))
   }
 
   /* Event handlers */
