@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+
+initializeIcons()
 
 ReactDOM.render(
   <React.StrictMode>

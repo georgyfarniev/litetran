@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { PrimaryButton, DefaultButton } from 'office-ui-fabric-react/lib/Button';
+import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { Dropdown } from 'office-ui-fabric-react/lib/Dropdown';
+import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox';
 import { useSelection, useTranslate } from './hooks'
+
 import './App.css';
 
 function App() {
@@ -45,29 +46,31 @@ function App() {
         onChange={(_, val: any) => setText(val)}
       />
       <div className="lt-toolbar">
-        <Dropdown
+        <ComboBox
           className="lt-toolbar-select"
-          placeholder="Select an option"
-          options={languages}
           selectedKey={fromLang}
+          autoComplete="on"
+          options={languages}
           onChange={(_: any, item: any) => setFromLang(item.key)}
         />
-        <DefaultButton
+        <IconButton
           className="lt-swap-btn"
-          text="Swap"
           onClick={swap}
+          iconProps={{ iconName: 'Switch' }}
+          title="Swap"
+          ariaLabel="Swap"
         />
-        <Dropdown
+        <ComboBox
           className="lt-toolbar-select"
-          placeholder="Select an option"
-          options={languages}
           selectedKey={toLang}
+          autoComplete="on"
+          options={languages}
           onChange={(_: any, item: any) => setToLang(item.key)}
-
         />
         <PrimaryButton
           className="lt-toolbar-btn"
           text="Translate"
+          iconProps={{ iconName: 'Send' }}
           onClick={translate}
         />
       </div>
