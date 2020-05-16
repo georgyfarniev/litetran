@@ -7,11 +7,13 @@ import {
   Request,
   globalShortcut,
   screen,
-  Event
+  Event,
+  Rectangle
 } from 'electron'
 import * as path from 'path'
 import * as url from 'url'
 import { getSelectedText } from './platform'
+import { Config } from './config'
 
 const DEV_URL = 'http://localhost:3000'
 const SHORTCUT = 'Ctrl+T'
@@ -25,10 +27,11 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 class Application {
   private window?: BrowserWindow
   private tray?: Tray
+  private config: Config = new Config()
+  private quitting: boolean = false
 
   constructor() {
     app.on('ready', this.onReady.bind(this))
-    app.on('activate', this.onActivate.bind(this))
     app.on('before-quit', this.onBeforeQuit.bind(this))
   }
 
@@ -63,7 +66,11 @@ class Application {
     this.window?.webContents.send('selection', selected)
   }
 
-  private quit() {
+  private async quit() {
+    await this.config.save({
+      geometry: this.window?.getBounds()
+    })
+    this.quitting = true
     app.quit()
   }
 
@@ -71,12 +78,14 @@ class Application {
     this.window?.show()
   }
 
-  private createWindow() {
+  private createWindow(geometry: Partial<Rectangle>) {
     const isDev = process.env.NODE_ENV === 'development'
 
     this.window = new BrowserWindow({
-      height: 600,
-      width: 800,
+      height: geometry.height,
+      width: geometry.width,
+      x: geometry.x,
+      y: geometry.y,
       webPreferences: {
         nodeIntegration: true
       }
@@ -128,18 +137,18 @@ class Application {
   /* Event handlers */
 
   private onWindowClose(event: Event) {
+    if (this.quitting) {
+      return
+    }
+
     event.preventDefault()
     this.window?.hide()
   }
 
-  private onActivate() {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      this.createWindow()
-    }
-  }
+  private async onReady() {
+    const config = await this.config.read()
 
-  private onReady() {
-    this.createWindow()
+    this.createWindow(config.geometry)
     this.createTray()
     this.registerShortcuts()
   }
