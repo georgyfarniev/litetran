@@ -10,7 +10,6 @@
   flex-direction: row;
   flex-grow: 1;
   padding:  10px 0;
-  /* justify-content: space-between; */
 }
 
 .lt-toolbar-select {
@@ -26,7 +25,21 @@
   margin: 0 10px;
 }
 
+
 .lt-textfield {
-  /* flex-grow: 2; */
   height: calc(50vh - 36px);
+}
+
+.lt-input-container {
+  position:relative;
+}
+
+.lt-input-toolbar {
+  display: flex;
+  flex-direction: row;
+  position:absolute;
+  bottom: 16px;
+  left:16px;
+  width: 32px;
+  height: 32px;
 }

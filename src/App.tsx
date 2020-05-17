@@ -1,10 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox';
 import { useSelection, useTranslate } from './hooks'
-
 import './App.css';
+
+function Toolbar(props: any) {
+  return (
+    <div className="lt-input-toolbar" onClick={props.onClick}>
+      {props.children}
+    </div>
+  )
+}
+
+function Input(props: any) {
+  const ref = useRef(null)
+
+  return (
+    <div className="lt-input-container">
+      <TextField
+        inputClassName="lt-textfield"
+        multiline
+        resizable={false}
+        value={props.value}
+        onChange={(_, val: any) => props.onChange(val)}
+        componentRef={ref}
+      />
+      <Toolbar onClick={() => ref?.current?.focus()}>
+        <IconButton
+          iconProps={{ iconName: 'Play' }}
+          title="Play"
+          ariaLabel="Play"
+        />
+        <IconButton
+          iconProps={{ iconName: 'Copy' }}
+          title="Copy"
+          ariaLabel="Copy"
+        />
+      </Toolbar>
+    </div>
+  )
+}
 
 function App() {
   const selected = useSelection()
@@ -38,13 +74,7 @@ function App() {
 
   return (
     <div className="lt-app">
-      <TextField
-        inputClassName="lt-textfield"
-        multiline
-        resizable={false}
-        value={text}
-        onChange={(_, val: any) => setText(val)}
-      />
+      <Input value={text} onChange={setText}></Input>
       <div className="lt-toolbar">
         <ComboBox
           className="lt-toolbar-select"
