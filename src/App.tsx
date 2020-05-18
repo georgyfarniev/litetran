@@ -4,7 +4,7 @@ import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
 
 import { useSelection, useTranslate } from './hooks'
 import './App.css'
-import { Settings } from './components/Settings'
+import { SettingsModal } from './components/SettingsModal'
 import { TranslateTextarea } from './components/TranslateTextarea'
 
 function App() {
@@ -40,10 +40,10 @@ function App() {
 
   return (
     <div className="lt-app">
-      <Settings
+      <SettingsModal
         visible={settingsVisible}
         onChange={setSettingsVisible}
-      ></Settings>
+      ></SettingsModal>
       <TranslateTextarea value={text} onChange={setText}></TranslateTextarea>
       <div className="lt-toolbar">
         <ComboBox
