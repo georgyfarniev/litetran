@@ -40,6 +40,5 @@
 }
 
 .lt-settings-modal {
-  width: 90%; 
-  height: 90%;
+  width: auto;
 }

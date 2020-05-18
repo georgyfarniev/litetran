@@ -4,57 +4,112 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox';
 import { Modal } from 'office-ui-fabric-react/lib/Modal';
 
+import {
+  getTheme,
+  mergeStyleSets,
+  FontWeights,
+  ContextualMenu,
+  Toggle,
+  DefaultButton,
+  IDragOptions,
+  IIconProps,
+} from 'office-ui-fabric-react';
+
 import { useSelection, useTranslate } from './hooks'
 import './App.css';
 import { useId, useBoolean } from '@uifabric/react-hooks';
 
 function Settings(props: any) {
+
+  const theme = getTheme();
+  const contentStyles = mergeStyleSets({
+    container: {
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      alignItems: 'stretch',
+    },
+    header: [
+      // tslint:disable-next-line:deprecation
+      theme.fonts.xLargePlus,
+      {
+        flex: '1 1 auto',
+        borderTop: `4px solid ${theme.palette.themePrimary}`,
+        color: theme.palette.neutralPrimary,
+        display: 'flex',
+        alignItems: 'center',
+        fontWeight: FontWeights.semibold,
+        padding: '12px 12px 14px 24px',
+      },
+    ],
+    body: {
+      flex: '4 4 auto',
+      padding: '0 24px 24px 24px',
+      overflowY: 'hidden',
+      selectors: {
+        p: { margin: '14px 0' },
+        'p:first-child': { marginTop: 0 },
+        'p:last-child': { marginBottom: 0 },
+      },
+    },
+  });
+  const toggleStyles = { root: { marginBottom: '20px' } };
+  const iconButtonStyles = {
+    root: {
+      color: theme.palette.neutralPrimary,
+      marginLeft: 'auto',
+      marginTop: '4px',
+      marginRight: '2px',
+    },
+    rootHovered: {
+      color: theme.palette.neutralDark,
+    },
+  };
+
+  const cancelIcon: IIconProps = { iconName: 'Cancel' };
+
   const titleId = useId('title');
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
+
+  const closeSettings = () => {
+    hideModal()
+        props.onChange && props.onChange(false)
+  }
 
   useEffect(
     () => {
       if (props.visible) {
         showModal()
       } else {
-        hideModal()
+        closeSettings()
       }
     },
     [props.visible]
   )
 
   return (
-    <div>
-      {/* <PrimaryButton onClick={showModal} text="Open Modal" /> */}
 
-      <Modal
-        containerClassName='lt-settings-modal'
-        titleAriaId={titleId}
-        isOpen={isModalOpen}
-        onDismiss={
-          () => {
-            hideModal()
-            props.onChange && props.onChange(false)
-          }
-        }
-        isBlocking={false}
-      >
-        <div>
-          <span id={titleId}>Lorem Ipsum</span>
-          {/* <IconButton
-        styles={iconButtonStyles}
-        iconProps={cancelIcon}
-        ariaLabel="Close popup modal"
-        onClick={hideModal}
-      /> */}
-        </div>
-        <div>
-          <p>
-            efficitur.
-      </p>
-        </div>
-      </Modal>
-    </div>
+    <Modal
+      containerClassName='lt-settings-modal'
+      titleAriaId={titleId}
+      isOpen={isModalOpen}
+      onDismiss={closeSettings}
+      isBlocking={false}
+    >
+      <div className={contentStyles.header}>
+        <span id={titleId}>Lorem Ipsum</span>
+        <IconButton
+          styles={iconButtonStyles}
+          iconProps={cancelIcon}
+          ariaLabel="Close popup modal"
+          onClick={closeSettings  }
+        />
+      </div>
+      <div className={contentStyles.body}>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur
+            </p>
+      </div>
+    </Modal>
   )
 }
 
@@ -108,7 +163,6 @@ function App() {
   const [toLang, setToLang] = useState('ru')
   const [text, setText] = useState('')
   const [input, setInput] = useState('')
-
   const [settingsVisible, setSettingsVisible] = useState(false)
 
 
