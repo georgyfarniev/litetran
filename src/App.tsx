@@ -2,8 +2,61 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox';
+import { Modal } from 'office-ui-fabric-react/lib/Modal';
+
 import { useSelection, useTranslate } from './hooks'
 import './App.css';
+import { useId, useBoolean } from '@uifabric/react-hooks';
+
+function Settings(props: any) {
+  const titleId = useId('title');
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
+
+  useEffect(
+    () => {
+      if (props.visible) {
+        showModal()
+      } else {
+        hideModal()
+      }
+    },
+    [props.visible]
+  )
+
+  return (
+    <div>
+      {/* <PrimaryButton onClick={showModal} text="Open Modal" /> */}
+
+      <Modal
+        containerClassName='lt-settings-modal'
+        titleAriaId={titleId}
+        isOpen={isModalOpen}
+        onDismiss={
+          () => {
+            hideModal()
+            props.onChange && props.onChange(false)
+          }
+        }
+        isBlocking={false}
+      >
+        <div>
+          <span id={titleId}>Lorem Ipsum</span>
+          {/* <IconButton
+        styles={iconButtonStyles}
+        iconProps={cancelIcon}
+        ariaLabel="Close popup modal"
+        onClick={hideModal}
+      /> */}
+        </div>
+        <div>
+          <p>
+            efficitur.
+      </p>
+        </div>
+      </Modal>
+    </div>
+  )
+}
 
 function Toolbar(props: any) {
   return (
@@ -16,6 +69,12 @@ function Toolbar(props: any) {
 function Input(props: any) {
   const ref = useRef(null)
 
+  const onChange = (_: any, value?: string) => {
+    if (!props.readOnly && props.onChange) {
+      props.onChange(value)
+    }
+  }
+
   return (
     <div className="lt-input-container">
       <TextField
@@ -23,8 +82,9 @@ function Input(props: any) {
         multiline
         resizable={false}
         value={props.value}
-        onChange={(_, val: any) => props.onChange(val)}
+        onChange={onChange}
         componentRef={ref}
+        readOnly={props.readOnly}
       />
       <Toolbar onClick={() => ref?.current?.focus()}>
         <IconButton
@@ -48,6 +108,9 @@ function App() {
   const [toLang, setToLang] = useState('ru')
   const [text, setText] = useState('')
   const [input, setInput] = useState('')
+
+  const [settingsVisible, setSettingsVisible] = useState(false)
+
 
   const translate = () => setInput(text)
   const swap = () => {
@@ -74,6 +137,10 @@ function App() {
 
   return (
     <div className="lt-app">
+      <Settings
+        visible={settingsVisible}
+        onChange={setSettingsVisible}
+      ></Settings>
       <Input value={text} onChange={setText}></Input>
       <div className="lt-toolbar">
         <ComboBox
@@ -97,19 +164,20 @@ function App() {
           options={languages}
           onChange={(_: any, item: any) => setToLang(item.key)}
         />
+        <IconButton
+          className="lt-swap-btn"
+          onClick={() => setSettingsVisible(true)}
+          iconProps={{ iconName: 'Settings' }}
+          title="Settings"
+          ariaLabel="Settings"
+        />
         <PrimaryButton
-          className="lt-toolbar-btn"
           text="Translate"
           iconProps={{ iconName: 'Send' }}
           onClick={translate}
         />
       </div>
-      <TextField
-        inputClassName="lt-textfield"
-        multiline
-        resizable={false}
-        value={result}
-      />
+      <Input value={result} readOnly></Input>
     </div>
   )
 }

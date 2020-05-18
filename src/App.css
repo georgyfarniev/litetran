@@ -14,11 +14,6 @@
 
 .lt-toolbar-select {
   flex-grow: 2;
-  /* padding-right: 10px; */
-}
-
-.lt-toolbar-btn {
-  margin-left: 10px;
 }
 
 .lt-swap-btn {
@@ -42,4 +37,9 @@
   left:16px;
   width: 32px;
   height: 32px;
+}
+
+.lt-settings-modal {
+  width: 90%; 
+  height: 90%;
 }
