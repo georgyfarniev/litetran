@@ -1,8 +1,8 @@
 {
-  "name": "litetran-ng",
-  "productName": "litetran-ng",
+  "name": "litetran",
+  "productName": "litetran",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "LiteTran",
   "main": "dist/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development npm run dev:start",
@@ -23,18 +23,6 @@
   "license": "MIT",
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "config": {
     "forge": {
@@ -87,10 +75,10 @@
     "typescript": "^3.8.3",
     "@fluentui/react": "^7.112.0",
     "@types/axios": "^0.14.0",
-    "axios": "^0.19.2"
+    "axios": "^0.19.2",
+    "@use-hooks/axios": "^1.3.1"
   },
   "dependencies": {
-    "@use-hooks/axios": "^1.3.1",
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "electron-squirrel-startup": "^1.0.0",
