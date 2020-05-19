@@ -20,9 +20,7 @@ function App() {
     setFromLang(to)
   }
 
-  useEffect(() => {
-    setText(selected)
-  }, [selected])
+  useEffect(() => setText(selected), [selected])
 
   const debouncedText = useDebounce(text)
 

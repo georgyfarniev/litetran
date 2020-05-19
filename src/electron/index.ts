@@ -16,7 +16,7 @@ import { getSelectedText } from './platform'
 import { Config } from './config'
 
 const DEV_URL = 'http://localhost:3000'
-const SHORTCUT = 'Ctrl+T'
+const SHORTCUT = 'CommandOrControl+B'
 const POPUP_CORNER_PADDING = 32
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
