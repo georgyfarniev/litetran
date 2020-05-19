@@ -3,6 +3,17 @@ import useAxios from '@use-hooks/axios'
 
 const { ipcRenderer } = window.require("electron")
 
+export function useDebounce(value: any, timeoutMs: number = 800) {
+  const [debounced, setDebounced] = useState(value)
+
+  useEffect(() => {
+    const handle = setTimeout(() => setDebounced(value), timeoutMs)
+    return () => clearTimeout(handle)
+  }, [ value ])
+
+  return debounced
+}
+
 export function useSelection() {
   const [selected, setSelected] = useState('')
 
@@ -41,7 +52,7 @@ export function useTranslate(opts: IUseTranslateOpts): IUseTranslateResponse {
         lang: `${opts.from}-${opts.to}`
       }
     },
-    trigger: opts.text
+    trigger: [ opts.text, opts.from, opts.to ]
   })
 
   return {
