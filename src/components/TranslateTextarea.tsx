@@ -12,6 +12,13 @@ export function TranslateTextarea(props: any) {
     }
   }
 
+  const copy = () => {
+    ref?.current?.select()
+    document.execCommand('copy')
+  }
+
+  const focus = () => ref?.current?.focus()
+
   return (
     <div className="lt-input-container">
       <TextField
@@ -23,16 +30,12 @@ export function TranslateTextarea(props: any) {
         componentRef={ref}
         readOnly={props.readOnly}
       />
-      <Toolbar onClick={() => ref?.current?.focus()}>
-        <IconButton
-          iconProps={{ iconName: 'Play' }}
-          title="Play"
-          ariaLabel="Play"
-        />
+      <Toolbar onClick={focus}>
         <IconButton
           iconProps={{ iconName: 'Copy' }}
           title="Copy"
           ariaLabel="Copy"
+          onClick={copy}
         />
       </Toolbar>
     </div>
