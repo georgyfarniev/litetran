@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { PrimaryButton, IconButton } from 'office-ui-fabric-react/lib/Button'
+import { IconButton } from 'office-ui-fabric-react/lib/Button'
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
 import { useSelection, useTranslate, useDebounce } from './hooks'
 import './App.css'
 import { SettingsModal } from './components/SettingsModal'
 import { TranslateTextarea } from './components/TranslateTextarea'
 import * as directions from './directions.json'
-
 
 function App() {
   const selected = useSelection()
@@ -27,14 +26,13 @@ function App() {
 
   const debouncedText = useDebounce(text)
 
-  const { result, loading } = useTranslate({
+  const { result } = useTranslate({
     from: fromLang,
     to: toLang,
     text: debouncedText
   })
 
-
-  const languages: any = directions.default
+  const languages = directions.default
 
   return (
     <div className="lt-app">
