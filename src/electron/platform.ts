@@ -10,7 +10,9 @@ export function getSelectedText(): string {
     return clipboard.readText('selection')
   }
 
+  const modifier = process.platform === 'darwin' ? 'command' : 'control'
+
   // On other platforms, attempt to send Ctrl+C key and grab text from clipboard
-  robotjs.keyTap('C', 'control')
+  robotjs.keyTap('c', modifier)
   return clipboard.readText('clipboard')
 }
