@@ -18,6 +18,9 @@ import { Config } from './config'
 const DEV_URL = 'http://localhost:3000'
 const SHORTCUT = 'CommandOrControl+B'
 const POPUP_CORNER_PADDING = 32
+const WINDOW_TITLE = 'LiteTran'
+const TRAY_HINT = 'Show LiteTran'
+const LOGO = path.normalize(`${__dirname}/../../public/logo.png`)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -82,6 +85,8 @@ class Application {
     const isDev = process.env.NODE_ENV === 'development'
 
     this.window = new BrowserWindow({
+      icon: LOGO,
+      title: WINDOW_TITLE,
       height: geometry.height,
       width: geometry.width,
       x: geometry.x,
@@ -115,7 +120,7 @@ class Application {
   }
 
   private createTray() {
-    const icon = path.normalize(`${__dirname}/../../public/logo192.png`)
+    const icon = LOGO
     this.tray = new Tray(icon)
     const contextMenu = Menu.buildFromTemplate([
       {
@@ -129,7 +134,7 @@ class Application {
         click: this.quit.bind(this)
       },
     ])
-    this.tray.setToolTip('This is my application.')
+    this.tray.setToolTip(TRAY_HINT)
     this.tray.setContextMenu(contextMenu)
     this.tray.on('click', this.activate.bind(this))
   }
