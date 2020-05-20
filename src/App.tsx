@@ -4,9 +4,8 @@ import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
 import { useSelection, useTranslate, useDebounce } from './hooks'
 // import { SettingsModal } from './components/SettingsModal'
 import { TranslateTextarea } from './components/TranslateTextarea'
-
+import { LANGUAGES } from './languages'
 import './App.css'
-import { default as languages } from './directions.json'
 
 function App() {
   const selected = useSelection()
@@ -47,7 +46,7 @@ function App() {
           className="lt-toolbar-select"
           selectedKey={fromLang}
           autoComplete="on"
-          options={languages as any}
+          options={LANGUAGES}
           onChange={setFrom}
         />
         <IconButton
@@ -61,7 +60,7 @@ function App() {
           className="lt-toolbar-select"
           selectedKey={toLang}
           autoComplete="on"
-          options={languages}
+          options={LANGUAGES}
           onChange={setTo}
         />
         <IconButton
@@ -73,7 +72,7 @@ function App() {
         />
         {/* <IconButton
           className="lt-config-btn"
-          onClick={() => setSettingsVisible(true)}                             
+          onClick={() => setSettingsVisible(true)}
           iconProps={{ iconName: 'Settings' }}
           title="Settings"
           ariaLabel="Settings"
