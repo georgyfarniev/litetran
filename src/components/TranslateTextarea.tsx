@@ -1,10 +1,10 @@
 import React, { useRef } from 'react'
-import { TextField } from 'office-ui-fabric-react/lib/TextField'
+import { TextField, ITextField } from 'office-ui-fabric-react/lib/TextField'
 import { IconButton } from 'office-ui-fabric-react/lib/Button'
 import { Toolbar } from './Toolbar'
 
 export function TranslateTextarea(props: any) {
-  const ref = useRef(null)
+  const ref = useRef<ITextField>(null)
 
   const onChange = (_: any, value?: string) => {
     if (!props.readOnly && props.onChange) {
