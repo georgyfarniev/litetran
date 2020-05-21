@@ -36,6 +36,7 @@ class Application {
   constructor() {
     app.on('ready', this.onReady.bind(this))
     app.on('before-quit', this.onBeforeQuit.bind(this))
+    app.on('second-instance', this.onSecondInstance.bind(this))
   }
 
   private registerShortcuts() {
@@ -141,6 +142,12 @@ class Application {
 
   /* Event handlers */
 
+  private onSecondInstance() {
+    if (this.window) {
+      this.activate()
+    }
+  }
+
   private onWindowClose(event: Event) {
     if (this.quitting) {
       return
@@ -177,7 +184,14 @@ class Application {
 }
 
 function main() {
-  const litetranApp = new Application()
+  const gotTheLock = app.requestSingleInstanceLock()
+
+  if (!gotTheLock) {
+    console.log('application already running, exiting this instance')
+    return app.quit()
+  }
+
+  new Application()
 }
 
 if (require.main === module) {
