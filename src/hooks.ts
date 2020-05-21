@@ -3,7 +3,7 @@ import useAxios from '@use-hooks/axios'
 
 const { ipcRenderer } = window.require("electron")
 
-export function useDebounce(value: any, timeoutMs: number = 800) {
+export function useDebounce(value: any, timeoutMs: number = 500) {
   const [debounced, setDebounced] = useState(value)
 
   useEffect(() => {

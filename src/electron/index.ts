@@ -66,6 +66,10 @@ class Application {
   }
 
   private popup() {
+    if (this.window?.isFocused()) {
+      return
+    }
+
     const pos = this.calculateOptimalPopupPosition()
 
     this!.window!.setPosition(pos.x , pos.y)
@@ -73,6 +77,10 @@ class Application {
   }
 
   private async translate() {
+    if (this.window?.isFocused()) {
+      return
+    }
+
     const selected = getSelectedText()
     this.window?.webContents.send('selection', selected)
   }

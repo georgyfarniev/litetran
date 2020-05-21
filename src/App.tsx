@@ -30,7 +30,7 @@ function App() {
   const setFrom = (_: any, item: any) => setFromLang(item.key)
   const setTo = (_: any, item: any) => setToLang(item.key)
 
-  const debouncedText = useDebounce(text, 2000)
+  const debouncedText = useDebounce(text)
 
   useEffect(() => {
     setInput(selected)
