@@ -18,6 +18,8 @@ import { Config } from './config'
 const DEV_URL = 'http://localhost:3000'
 const SHORTCUT = 'CommandOrControl+B'
 const POPUP_CORNER_PADDING = 32
+const MIN_WIDTH = 400
+const MIN_HEIGHT = 400
 const WINDOW_TITLE = 'LiteTran'
 const TRAY_HINT = 'Show LiteTran'
 const LOGO = path.normalize(`${__dirname}/../../public/logo.png`)
@@ -90,6 +92,8 @@ class Application {
       title: WINDOW_TITLE,
       height: geometry.height,
       width: geometry.width,
+      minWidth: MIN_WIDTH,
+      minHeight: MIN_HEIGHT,
       x: geometry.x,
       y: geometry.y,
       webPreferences: {
