@@ -12,7 +12,8 @@ function App() {
   const [fromLang, setFromLang] = useState('en')
   const [toLang, setToLang] = useState('ru')
   const [text, setText] = useState('')
-  // const [settingsVisible, setSettingsVisible] = useState(false)
+  const [input, setInput] = useState('')
+  const [translated, setTranslated] = useState('')
 
   const swap = () => {
     const to = toLang
@@ -20,19 +21,30 @@ function App() {
     setFromLang(to)
   }
 
-  const clear = () => setText('')
+  const clear = () => {
+    setText('')
+    setTranslated('')
+  }
+
   const setFrom = (_: any, item: any) => setFromLang(item.key)
   const setTo = (_: any, item: any) => setToLang(item.key)
 
-  useEffect(() => setText(selected), [selected])
+  const debouncedText = useDebounce(text, 2000)
 
-  const debouncedText = useDebounce(text)
+  useEffect(() => {
+    setInput(selected)
+    setText(selected)
+  }, [selected])
+
+  useEffect(() => setInput(debouncedText), [debouncedText])
 
   const { result } = useTranslate({
     from: fromLang,
     to: toLang,
-    text: debouncedText
+    text: input
   })
+
+  useEffect(() => setTranslated(result), [result])
 
   return (
     <div className="lt-app">
@@ -79,7 +91,7 @@ function App() {
         /> */}
         
       </div>
-      <TranslateTextarea value={result}/>
+      <TranslateTextarea value={translated}/>
     </div>
   )
 }

@@ -52,7 +52,8 @@ export function useTranslate(opts: IUseTranslateOpts): IUseTranslateResponse {
         lang: `${opts.from}-${opts.to}`
       }
     },
-    trigger: [ opts.text, opts.from, opts.to ]
+    trigger: [ opts.text, opts.from, opts.to ],
+    forceDispatchEffect: () => !!opts.text
   })
 
   return {
