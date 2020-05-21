@@ -6,6 +6,7 @@ import { useSelection, useTranslate, useDebounce } from './hooks'
 import { TranslateTextarea } from './components/TranslateTextarea'
 import { LANGUAGES } from './languages'
 import './App.css'
+const { ipcRenderer } = window.require("electron")
 
 function App() {
   const selected = useSelection()
@@ -44,7 +45,12 @@ function App() {
     text: input
   })
 
-  useEffect(() => setTranslated(result), [result])
+  useEffect(() => {
+    setTranslated(result)
+    if (result && result.length > 0) {
+      ipcRenderer.send('translated', result)
+    }
+  }, [result])
 
   return (
     <div className="lt-app">

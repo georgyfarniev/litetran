@@ -7,6 +7,7 @@ import {
   Request,
   globalShortcut,
   screen,
+  ipcMain,
   Event,
   Rectangle
 } from 'electron'
@@ -39,6 +40,7 @@ class Application {
     app.on('ready', this.onReady.bind(this))
     app.on('before-quit', this.onBeforeQuit.bind(this))
     app.on('second-instance', this.onSecondInstance.bind(this))
+    ipcMain.on('translated', this.popup.bind(this))
   }
 
   private registerShortcuts() {
@@ -63,12 +65,15 @@ class Application {
     }
   }
 
-  private async translate() {
-    const selected = getSelectedText()
+  private popup() {
     const pos = this.calculateOptimalPopupPosition()
 
     this!.window!.setPosition(pos.x , pos.y)
     this.window?.show()
+  }
+
+  private async translate() {
+    const selected = getSelectedText()
     this.window?.webContents.send('selection', selected)
   }
 
