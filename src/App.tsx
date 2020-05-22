@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { IconButton } from 'office-ui-fabric-react/lib/Button'
 import { ComboBox } from 'office-ui-fabric-react/lib/ComboBox'
-import { useSelection, useTranslate, useDebounce } from './hooks'
+import { useSelection, useTranslate, useDebounce } from './hooks/'
 // import { SettingsModal } from './components/SettingsModal'
 import { TranslateTextarea } from './components/TranslateTextarea'
 import { LANGUAGES } from './languages'
