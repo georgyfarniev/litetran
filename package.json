@@ -93,7 +93,7 @@
     "axios": "^0.19.2",
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
-    "electron": "8.2.5",
+    "electron": "8.5.2",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
     "react": "^16.13.1",
